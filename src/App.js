@@ -1,24 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React, { useState } from 'react';
+import './App.css'
 function App() {
+  const [imageSrcList, setImageSrcList] = useState([]);
+  const pictureImageTxt = "Choose an image";
+
+  const handleInputChange = (e) => {
+    const files = e.target.files;
+    if (files.length > 0) {
+      const newImageSrcList = Array.from(files).map((file) => URL.createObjectURL(file));
+      setImageSrcList(newImageSrcList);
+    } else {
+      setImageSrcList([]);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div>
+        {imageSrcList.map((imageSrc, index) => (
+          <label key={index} className="picture" tabIndex="0">
+            <span className="picture__image">
+              <img src={imageSrc} alt={`Uploaded ${index + 1}`} className="picture__img" />
+            </span>
+          </label>
+        ))}
+      </div>
+
+      <input
+        type="file"
+        name="picture__input"
+        id="picture__input"
+        onChange={handleInputChange}
+        multiple
+      />
+    </>
   );
 }
 
